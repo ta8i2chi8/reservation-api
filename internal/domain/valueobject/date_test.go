@@ -2,77 +2,106 @@ package valueobject
 
 import (
 	"testing"
+	"time"
 )
 
-func TestNewEmail(t *testing.T) {
+func TestNewDate(t *testing.T) {
 	tests := []struct {
 		name    string
-		email   string
+		date    time.Time
 		wantErr bool
 	}{
 		{
-			name:    "Valid email",
-			email:   "test@example.com",
+			name:    "Valid date",
+			date:    time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC),
 			wantErr: false,
 		},
 		{
-			name:    "Invalid email - no @",
-			email:   "testexample.com",
+			name:    "Zero time",
+			date:    time.Time{},
 			wantErr: true,
 		},
 		{
-			name:    "Invalid email - no domain",
-			email:   "test@",
-			wantErr: true,
-		},
-		{
-			name:    "Invalid email - empty",
-			email:   "",
-			wantErr: true,
-		},
-		{
-			name:    "Valid email with subdomain",
-			email:   "test@mail.example.com",
-			wantErr: false,
-		},
-		{
-			name:    "Valid email with special chars",
-			email:   "test.user+tag@example.com",
+			name:    "Past date",
+			date:    time.Date(2020, 6, 1, 12, 0, 0, 0, time.UTC),
 			wantErr: false,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			email, err := NewEmail(tt.email)
+			date, err := NewDate(tt.date)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("NewEmail() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("NewDate() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if email == nil && !tt.wantErr {
-				t.Error("NewEmail() returned nil email")
+			if date == nil && !tt.wantErr {
+				t.Error("NewDate() returned nil date")
 			}
-			if email != nil && email.Value() != tt.email {
-				t.Errorf("NewEmail() = %v, want %v", email.Value(), tt.email)
+			if date != nil && !date.Value().Equal(tt.date) {
+				t.Errorf("NewDate() = %v, want %v", date.Value(), tt.date)
 			}
 		})
 	}
 }
 
-func TestEmailEquals(t *testing.T) {
-	email1, _ := NewEmail("test@example.com")
-	email2, _ := NewEmail("test@example.com")
-	email3, _ := NewEmail("different@example.com")
+func TestDateEquals(t *testing.T) {
+	date1, _ := NewDate(time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC))
+	date2, _ := NewDate(time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC))
+	date3, _ := NewDate(time.Date(2026, 3, 20, 0, 0, 0, 0, time.UTC))
 
-	if !email1.Equals(email2) {
-		t.Error("Email1 should equal email2")
+	if !date1.Equals(date2) {
+		t.Error("date1 should equal date2")
 	}
 
-	if email1.Equals(email3) {
-		t.Error("Email1 should not equal email3")
+	if date1.Equals(date3) {
+		t.Error("date1 should not equal date3")
 	}
 
-	if email1.Equals(nil) {
-		t.Error("Email1 should not equal nil")
+	if date1.Equals(nil) {
+		t.Error("date1 should not equal nil")
+	}
+}
+
+func TestDateIsBefore(t *testing.T) {
+	date1, _ := NewDate(time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC))
+	date2, _ := NewDate(time.Date(2026, 3, 20, 0, 0, 0, 0, time.UTC))
+
+	if !date1.IsBefore(date2) {
+		t.Error("date1 should be before date2")
+	}
+
+	if date2.IsBefore(date1) {
+		t.Error("date2 should not be before date1")
+	}
+
+	if date1.IsBefore(nil) {
+		t.Error("date1.IsBefore(nil) should return false")
+	}
+}
+
+func TestDateIsAfter(t *testing.T) {
+	date1, _ := NewDate(time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC))
+	date2, _ := NewDate(time.Date(2026, 3, 20, 0, 0, 0, 0, time.UTC))
+
+	if !date2.IsAfter(date1) {
+		t.Error("date2 should be after date1")
+	}
+
+	if date1.IsAfter(date2) {
+		t.Error("date1 should not be after date2")
+	}
+
+	if date1.IsAfter(nil) {
+		t.Error("date1.IsAfter(nil) should return false")
+	}
+}
+
+func TestDateString(t *testing.T) {
+	date, _ := NewDate(time.Date(2026, 1, 15, 0, 0, 0, 0, time.UTC))
+
+	expected := "2026-01-15"
+	if date.String() != expected {
+		t.Errorf("Date.String() = %v, want %v", date.String(), expected)
 	}
 }

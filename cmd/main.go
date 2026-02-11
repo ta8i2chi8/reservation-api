@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"os"
 
+	"reservation-system/internal/api/handler"
+	"reservation-system/internal/api/middleware"
 	"reservation-system/internal/infrastructure/db"
-	"reservation-system/internal/interface/handler"
-	"reservation-system/internal/interface/middleware"
 )
 
 func main() {
