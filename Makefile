@@ -24,7 +24,7 @@ test:
 
 clean:
 	rm -rf bin/
-	docker-compose down --volumes
+	docker compose down --volumes
 
 lint:
 	golangci-lint run
