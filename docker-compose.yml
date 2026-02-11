@@ -10,7 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d reservation_system"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - reservation-network
 
@@ -30,7 +34,8 @@ services:
       JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
       PORT: 8080
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - reservation-network
     restart: unless-stopped
