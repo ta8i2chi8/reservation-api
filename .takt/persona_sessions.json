@@ -1,0 +1,11 @@
+{
+  "personaSessions": {
+    "interactive": "ses_3b3de935dffey4pVmaQfg11etZ",
+    "planner": "ses_3b3d0ebf1ffeoDClbGDwFsTrDY",
+    "coder": "ses_3b356b4c3ffenstol0oqASA04o",
+    "supervisor": "ses_3b385e783ffe0IgNt2zjfEimWB",
+    "ai-antipattern-reviewer": "ses_3b385e801ffe5atk80CEDWDmIy"
+  },
+  "updatedAt": "2026-02-11T12:27:31.426Z",
+  "provider": "opencode"
+}
