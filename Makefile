@@ -13,11 +13,11 @@ help:
 build:
 	go build -o bin/main cmd/main.go
 
-run: build
-	./bin/main
+run:
+	go run cmd/main.go
 
 dev:
-	docker-compose up --build
+	docker compose up --build
 
 test:
 	go test -v ./...

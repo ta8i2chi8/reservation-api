@@ -23,11 +23,6 @@ This project follows Clean Architecture principles with Domain-Driven Design (DD
 
 ## Quick Start
 
-### Prerequisites
-
-- Docker and Docker Compose
-- Go 1.21+ (for local development)
-
 ### Using Docker Compose (Recommended)
 
 1. Clone the repository

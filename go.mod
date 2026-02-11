@@ -1,6 +1,8 @@
 module reservation-system
 
-go 1.25.6
+go 1.25
+
+toolchain go1.25.7
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.0.0
